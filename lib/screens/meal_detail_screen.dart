@@ -34,46 +34,48 @@ class MealDetail extends StatelessWidget {
 
     final selectedMeal =
         DUMMY_MEALS.firstWhere((meal) => meal.id == arguments['id']);
-    return Scaffold(
-      appBar: AppBar(title: Text(title!)),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          Container(
-            height: 300,
-            width: double.infinity,
-            child: Image.network(
-              selectedMeal.imageUrl,
-              fit: BoxFit.cover,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(title: Text(title!)),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Container(
+              height: 300,
+              width: double.infinity,
+              child: Image.network(
+                selectedMeal.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          buildSectionTitle(context, 'Ingredients'),
-          buildContainer(
-            ListView.builder(
-              itemBuilder: ((context, index) => Card(
-                    color: const Color.fromRGBO(255, 254, 229, 1),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child:
-                          Center(child: Text(selectedMeal.ingredients[index])),
-                    ),
+            buildSectionTitle(context, 'Ingredients'),
+            buildContainer(
+              ListView.builder(
+                itemBuilder: ((context, index) => Card(
+                      color: const Color.fromRGBO(255, 254, 229, 1),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                            child: Text(selectedMeal.ingredients[index])),
+                      ),
+                    )),
+                itemCount: selectedMeal.ingredients.length,
+              ),
+            ),
+            buildSectionTitle(context, 'Steps'),
+            buildContainer(ListView.builder(
+              itemBuilder: ((context, index) => Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(child: Text('# ${(index + 1)}')),
+                        title: Text(selectedMeal.steps[index]),
+                      ),
+                      const Divider(),
+                    ],
                   )),
-              itemCount: selectedMeal.ingredients.length,
-            ),
-          ),
-          buildSectionTitle(context, 'Steps'),
-          buildContainer(ListView.builder(
-            itemBuilder: ((context, index) => Column(
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(child: Text('# ${(index + 1)}')),
-                      title: Text(selectedMeal.steps[index]),
-                    ),
-                    const Divider(),
-                  ],
-                )),
-            itemCount: selectedMeal.steps.length,
-          ))
-        ]),
+              itemCount: selectedMeal.steps.length,
+            ))
+          ]),
+        ),
       ),
     );
   }

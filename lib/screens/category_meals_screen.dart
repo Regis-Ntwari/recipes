@@ -17,22 +17,24 @@ class CategoryMeals extends StatelessWidget {
     final categoryMeals = DUMMY_MEALS.where((recipe) {
       return recipe.categories.contains(categoryId);
     }).toList();
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        categoryTitle!,
-      )),
-      body: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return MealItem(
-              id: categoryMeals[index].id,
-              title: categoryMeals[index].title,
-              imageUrl: categoryMeals[index].imageUrl,
-              duration: categoryMeals[index].duration,
-              complexity: categoryMeals[index].complexity,
-              affordability: categoryMeals[index].affordability);
-        },
-        itemCount: categoryMeals.length,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+            title: Text(
+          categoryTitle!,
+        )),
+        body: ListView.builder(
+          itemBuilder: (ctx, index) {
+            return MealItem(
+                id: categoryMeals[index].id,
+                title: categoryMeals[index].title,
+                imageUrl: categoryMeals[index].imageUrl,
+                duration: categoryMeals[index].duration,
+                complexity: categoryMeals[index].complexity,
+                affordability: categoryMeals[index].affordability);
+          },
+          itemCount: categoryMeals.length,
+        ),
       ),
     );
   }
