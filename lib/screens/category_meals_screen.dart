@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../models/Recipe.dart';
 import '../widgets/meal_item.dart';
-import '../data/dummy_data.dart';
 
 class CategoryMeals extends StatefulWidget {
   static const routeName = '/category-meals';
 
-  const CategoryMeals();
+  final List<Recipe> availableMeals;
+
+  const CategoryMeals(this.availableMeals);
 
   @override
   State<CategoryMeals> createState() => _CategoryMealsState();
@@ -15,8 +16,8 @@ class CategoryMeals extends StatefulWidget {
 
 class _CategoryMealsState extends State<CategoryMeals> {
   late String title;
-  late List<Recipe> categoryMeals;
   var didLoadItems = false;
+  late List<Recipe> categoryMeals;
 
   @override
   void didChangeDependencies() {
@@ -27,7 +28,7 @@ class _CategoryMealsState extends State<CategoryMeals> {
 
       title = routeArguments['title']!;
       final categoryId = routeArguments['id'];
-      categoryMeals = DUMMY_MEALS.where((recipe) {
+      categoryMeals = widget.availableMeals.where((recipe) {
         return recipe.categories.contains(categoryId);
       }).toList();
       didLoadItems = true;
