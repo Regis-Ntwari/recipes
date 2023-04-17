@@ -1,27 +1,52 @@
 import 'package:flutter/material.dart';
 
+import '../models/Recipe.dart';
 import '../widgets/meal_item.dart';
 import '../data/dummy_data.dart';
 
-class CategoryMeals extends StatelessWidget {
+class CategoryMeals extends StatefulWidget {
   static const routeName = '/category-meals';
+
   const CategoryMeals();
 
   @override
-  Widget build(BuildContext context) {
-    final routeArguments =
-        ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+  State<CategoryMeals> createState() => _CategoryMealsState();
+}
 
-    final categoryTitle = routeArguments['title'];
-    final categoryId = routeArguments['id'];
-    final categoryMeals = DUMMY_MEALS.where((recipe) {
-      return recipe.categories.contains(categoryId);
-    }).toList();
+class _CategoryMealsState extends State<CategoryMeals> {
+  late String title;
+  late List<Recipe> categoryMeals;
+  var didLoadItems = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!didLoadItems) {
+      final routeArguments =
+          ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+
+      title = routeArguments['title']!;
+      final categoryId = routeArguments['id'];
+      categoryMeals = DUMMY_MEALS.where((recipe) {
+        return recipe.categories.contains(categoryId);
+      }).toList();
+      didLoadItems = true;
+    }
+  }
+
+  void _removeItem(String mealId) {
+    setState(() {
+      categoryMeals.removeWhere((meal) => meal.id == mealId);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
             title: Text(
-          categoryTitle!,
+          title,
         )),
         body: ListView.builder(
           itemBuilder: (ctx, index) {
@@ -31,7 +56,8 @@ class CategoryMeals extends StatelessWidget {
                 imageUrl: categoryMeals[index].imageUrl,
                 duration: categoryMeals[index].duration,
                 complexity: categoryMeals[index].complexity,
-                affordability: categoryMeals[index].affordability);
+                affordability: categoryMeals[index].affordability,
+                removeItem: _removeItem);
           },
           itemCount: categoryMeals.length,
         ),
