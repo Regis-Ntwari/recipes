@@ -33,6 +33,7 @@ class _FilterScreenState extends State<FilterScreen> {
       Function(bool) changeValue) {
     return SwitchListTile(
         title: Text(title),
+        activeColor: Theme.of(context).colorScheme.secondary,
         subtitle: Text(description),
         value: value,
         onChanged: changeValue);
