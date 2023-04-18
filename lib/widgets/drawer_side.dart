@@ -32,7 +32,7 @@ class DrawerSide extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        buildListTile('Meals', Icons.fork_left, () {
+        buildListTile('Categories', Icons.fork_left, () {
           Navigator.of(context).pushReplacementNamed("/");
         }),
         buildListTile('Filters', Icons.settings, () {
